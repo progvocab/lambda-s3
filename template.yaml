@@ -16,9 +16,9 @@ Resources:
       Runtime: nodejs10.x
       MemorySize: 128
       Timeout: 60
-      Policies: AmazonS3FullAccess
-        #S3ReadPolicy:
-        #  BucketName: !Ref AppBucketName
+      Policies: #AmazonS3FullAccess
+        S3ReadPolicy:
+          BucketName: !Ref AppBucketName
         
       Events:
         S3NewObjectEvent:
