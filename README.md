@@ -1,6 +1,6 @@
 sam local invoke S3JsonLoggerFunction --event events/event-s3.json
 
-
+sam local generate-event kinesis
 
 
 

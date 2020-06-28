@@ -9,6 +9,28 @@ Parameters:
     Description: "REQUIRED: Unique S3 bucket name to use for the app."
 
 Resources:
+  KinesisTriggerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/kinesis-trigger.handler
+      Runtime: nodejs10.x
+      MemorySize: 128
+      Timeout: 60
+      Policies: #AmazonS3FullAccess
+        S3ReadPolicy:
+          BucketName: !Ref AppBucketName
+        
+      Events:
+        S3NewObjectEvent:
+          Type: S3
+          Properties:
+            Bucket: progvocab
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: ".json"  
   S3JsonLoggerFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -30,7 +52,7 @@ Resources:
               S3Key:
                 Rules:
                   - Name: suffix
-                    Value: ".json"
+                    Value: ".json"  
   AppBucket:
     Type: AWS::S3::Bucket
     Properties:
